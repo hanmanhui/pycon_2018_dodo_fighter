@@ -104,8 +104,6 @@ def pred_next():
 
 
 def get_action(status):
-    if status['health'] > status['opponent_health'] and status['distance'] > 0:
-        return 'backward'
     if status['distance'] > 1:
         return 'forward'
     pred = pred_next()
@@ -113,6 +111,8 @@ def get_action(status):
         if status['distance'] == 1:
             if pred in ['kick', 'punch']:
                 return 'idle'
+            elif pred == 'forward':
+                return get_attack()
             else:
                 return 'forward'
         elif pred == 'kick':
@@ -126,6 +126,7 @@ def get_action(status):
         else:
             return get_attack()
     elif status['distance'] == 1:
+        return get_attack()
         cand = ['forward', 'attack']
         if get_defense() == 1:
             cand.append('attack')
